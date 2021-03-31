@@ -51,14 +51,14 @@ def main():
                         )
 
     iamRoleArn = create_iam_role(iam, CLUSTER_IAM_ROLE_NAME)
-    create_redshift_cluster(redshift, CLUSTER_TYPE, CLUSTER_NODE_TYPE, CLUSTER_NUM_NODES, DB_NAME, IDENTIFIER, DB_USER, DB_PASSWORD, iamRoleArn)
+    dbEndpoint = create_redshift_cluster(redshift, CLUSTER_TYPE, CLUSTER_NODE_TYPE, CLUSTER_NUM_NODES, DB_NAME, IDENTIFIER, DB_USER, DB_PASSWORD, iamRoleArn)
     
     # Load config from a file
     config = configparser.ConfigParser()
     config.read_file(open('./config.cfg'))
       
     CLUSTER = config['CLUSTER']
-    CLUSTER['HOST'] = 'test'
+    CLUSTER['HOST'] = dbEndpoint
     CLUSTER['DB_NAME'] = DB_NAME
     CLUSTER['DB_USER'] = DB_USER
     CLUSTER['DB_PASSWORD'] = DB_PASSWORD

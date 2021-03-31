@@ -5,7 +5,7 @@ def create_redshift_cluster(redshift, clusterType, nodeType, numNodes, dbName, c
             #HW
             ClusterType=clusterType,
             NodeType=nodeType,
-            NumberOfNodes=int(numNodes),
+            #NumberOfNodes=int(numNodes),
 
             #Identifiers & Credentials
             DBName=dbName,
@@ -21,6 +21,8 @@ def create_redshift_cluster(redshift, clusterType, nodeType, numNodes, dbName, c
         waiter.wait(ClusterIdentifier=clusterIdentifier)
         
         print('Redshift cluster created')
+        
+        return response['Endpoint']['Address']
     except Exception as e:
         print(e)
 
