@@ -4,6 +4,7 @@ import configparser
 # CONFIG
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
+config.read('config.cfg')
 
 # DROP TABLES
 
@@ -36,7 +37,7 @@ staging_events_table_create= ("""
         status INT,
         ts TIMESTAMP,
         userAgent VARCHAR,
-        userId VARCHAR
+        userId INT
     )                             
 """)
 
@@ -88,15 +89,16 @@ song_table_create = ("""
     CREATE TABLE IF NOT EXISTS songs (
         song_id INT PRIMARY KEY,
         title VARCHAR,
-        artist_id INT,
+        artist_id VARCHAR,
         year INT,
-        duration FLOAT
+        duration FLOAT,
+        FOREIGN KEY (artist_id) REFERENCES artists (artist_id)
     )
 """)
 
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artists (
-        artist_id INT PRIMARY KEY,
+        artist_id VARCHAR PRIMARY KEY,
         name VARCHAR,
         location VARCHAR,
         latitude FLOAT,
@@ -138,23 +140,86 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+    INSERT INTO songplays (
+        start_time,
+        user_id,
+        level,
+        song_id,
+        artist_id,
+        session_id,
+        location,
+        user_agent
+    )
+    ( 
+        SELECT 
+            events.ts,
+            events.userid,
+            events.level,
+            songs.song_id,
+            songs.artist_id,
+            events.sessionid,
+            events.location,
+            events.useragent
+        FROM staging_events events
+        JOIN staging_songs songs
+        ON (events.artist = songs.artist_name AND events.song = songs.title)
+    )        
 """)
 
 user_table_insert = ("""
+    INSERT INTO users (
+        SELECT DISTINCT
+            userid as user_id,
+            firstname as first_name,
+            lastname as last_name,
+            gender,
+            level
+        FROM staging_events
+        WHERE page = 'NextSong'
+    )
 """)
 
 song_table_insert = ("""
+    INSERT INTO songs (
+        SELECT 
+            song_id,
+            title,
+            artist_id,
+            year,
+            duration
+        FROM staging_songs
+    )
 """)
 
 artist_table_insert = ("""
+    INSERT INTO artists (
+        SELECT
+            artist_id,
+            artist_name as name,
+            artist_location as location,
+            artist_latitude as latitude,
+            artist_longitude as longitude 
+        FROM staging_songs
+    )
 """)
 
 time_table_insert = ("""
+    INSERT INTO time (
+        SELECT 
+        ts as start_time,
+        EXTRACT(HOUR FROM ts) as hour,
+        EXTRACT(DAY FROM ts) as day,
+        EXTRACT(WEEK FROM ts) as week,
+        EXTRACT(MONTH FROM ts) as month,
+        EXTRACT(YEAR FROM ts) as year,
+        EXTRACT(DOW FROM ts) as weekday
+        FROM staging_events
+    )
 """)
 
 # QUERY LISTS
 
-create_table_queries = [staging_events_table_create, staging_songs_table_create, user_table_create, song_table_create, artist_table_create, time_table_create, songplay_table_create]
+create_table_queries = [staging_events_table_create, staging_songs_table_create, user_table_create, artist_table_create, song_table_create, time_table_create, songplay_table_create]
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 copy_table_queries = [staging_events_copy, staging_songs_copy]
 insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
