@@ -1,6 +1,8 @@
 import boto3
 import configparser
 
+from botocore import endpoint
+
 from iam import *
 from redshift import *
 
@@ -51,7 +53,9 @@ def main():
                         )
 
     iamRoleArn = create_iam_role(iam, CLUSTER_IAM_ROLE_NAME)
+    print(iamRoleArn)
     dbEndpoint = create_redshift_cluster(redshift, CLUSTER_TYPE, CLUSTER_NODE_TYPE, CLUSTER_NUM_NODES, DB_NAME, IDENTIFIER, DB_USER, DB_PASSWORD, iamRoleArn)
+    print(dbEndpoint)    
     
     # Load config from a file
     config = configparser.ConfigParser()

@@ -22,16 +22,26 @@ def create_redshift_cluster(redshift, clusterType, nodeType, numNodes, dbName, c
         
         print('Redshift cluster created')
         
-        return response['Endpoint']['Address']
+        cluster = response['Cluster']
+        return cluster['Endpoint']['Address']
     except Exception as e:
         print(e)
+        return get_redshift_cluster(redshift, clusterIdentifier)
 
-def delete_redshift_cluster(redshift, clusterIdentifer):  
+def delete_redshift_cluster(redshift, clusterIdentifier):  
     try:
-        redshift.delete_cluster( ClusterIdentifier=clusterIdentifer,  SkipFinalClusterSnapshot=True)
+        redshift.delete_cluster( ClusterIdentifier=clusterIdentifier,  SkipFinalClusterSnapshot=True)
         waiter = redshift.get_waiter('cluster_deleted')
-        waiter.wait(ClusterIdentifier=clusterIdentifer)
+        waiter.wait(ClusterIdentifier=clusterIdentifier)
         
         print('Redshift cluster deleted')
+    except Exception as e:
+        print(e)
+        
+def get_redshift_cluster(redshift, clusterIdentifier):  
+    try:
+        response = redshift.describe_clusters(ClusterIdentifier=clusterIdentifier)
+        cluster = response['Clusters'][0]
+        return cluster['Endpoint']['Address']
     except Exception as e:
         print(e)
