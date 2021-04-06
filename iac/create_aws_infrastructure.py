@@ -1,8 +1,6 @@
 import boto3
 import configparser
 
-from botocore import endpoint
-
 from iam import *
 from redshift import *
 
