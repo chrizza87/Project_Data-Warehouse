@@ -2,7 +2,7 @@ import configparser
 
 
 # CONFIG
-config = configparser.ConfigParser(delimiters=('='))
+config = configparser.ConfigParser()
 config.read('dwh.cfg')
 config.read('config.cfg')
 
