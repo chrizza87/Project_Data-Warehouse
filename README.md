@@ -33,7 +33,7 @@ The following tools/packages/frameworks have to be installed on your system
 - click on your cluster
 - click on ```Properties``` tab
 - in the ```Network and security settings``` section click on the associated vpc security group
-- Add your current IP to the inbound rules of the security group for redshift db port (default: 5439) and save it (For security reasons the associated security group will block all access by default, therefore "ip white-listing" is needed)
+- Add your current IP to the inbound rules of the security group for redshift db port (default: 5439) and save it (for security reasons the associated security group will block all access by default, therefore "ip white-listing" is needed)
 
 ### 2.3 Run the project
 1. change ```dwh.cfg``` to your needs (default config is ready to use)
