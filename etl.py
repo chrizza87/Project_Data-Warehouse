@@ -33,7 +33,7 @@ def insert_tables(cur, conn):
 
 def main():
     """
-    Main function that reads the config file, connects to the redshift db, executes the loading and inserting methods and afterwerads closes the connection
+    Main function that reads the config file, connects to the redshift db, executes the loading and inserting methods and afterwards closes the connection
     """
     config = configparser.ConfigParser()
     config.read('config.cfg')
