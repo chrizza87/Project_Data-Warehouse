@@ -13,6 +13,10 @@ Dimension tables:
 - song
 - time
 
+Staging tables:
+- staging_songs
+- staging_events
+
 ## 2 Project Setup
 ### 2.1 Prerequisites
 The following tools/packages/frameworks have to be installed on your system
@@ -32,8 +36,12 @@ The following tools/packages/frameworks have to be installed on your system
 - Add your current IP to the inbound rules of the security group for redshift db port (default: 5439) and save it (For security reasons the associated security group will block all access by default, therefore "ip white-listing" is needed)
 
 ### 2.3 Run the project
+1. change ```dwh.cfg``` to your needs (default config is ready to use)
 1. run ```python3 create_tables.py``` to create the sharkifydb and all the tables needed
 2. run ```python3 etl.py``` to copy data from s3 to the staging tables and run queries to fill the fact and dimension tables. This may take a while.
 
 ## 3 ER-Diagram
 ![ERD-Sharkifydb](./erd-sparkifydb.png)
+
+## 4 Testing
+Db structure and query testing was done with https://dbeaver.io/
