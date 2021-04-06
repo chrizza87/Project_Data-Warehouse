@@ -7,6 +7,10 @@ from iam import *
 from redshift import *
 
 def main():
+    """
+    Main function for infrastructure as code creation. It reads the config file, creates the aws infrastructure (iam role, redshift db) and saves needed params, 
+    like the iam role arn or redshift host url, to a config file.
+    """
     # Load DWH Params from a file
     config = configparser.ConfigParser()
     config.read_file(open('./dwh.cfg'))
