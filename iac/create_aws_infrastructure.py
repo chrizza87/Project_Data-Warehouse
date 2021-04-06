@@ -19,7 +19,7 @@ def main():
     CLUSTER_NUM_NODES       = config.get("CLUSTER","CLUSTER_NUM_NODES")
     CLUSTER_NODE_TYPE       = config.get("CLUSTER","CLUSTER_NODE_TYPE")
 
-    IDENTIFIER                    = config.get("CLUSTER","IDENTIFIER")
+    IDENTIFIER              = config.get("CLUSTER","IDENTIFIER")
     DB_NAME                 = config.get("CLUSTER","DB_NAME")
     DB_USER                 = config.get("CLUSTER","DB_USER")
     DB_PASSWORD             = config.get("CLUSTER","DB_PASSWORD")
