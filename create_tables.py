@@ -4,18 +4,37 @@ from sql_queries import create_table_queries, drop_table_queries
 
 
 def drop_tables(cur, conn):
+    """
+    Executes the drop_table_queries to drop all tables in the redshift db 
+
+    Parameters
+    ----------
+    cur: The psycopg2 cursor for the connection
+    conn: The psycopg2 connection
+    """
     for query in drop_table_queries:
         cur.execute(query)
         conn.commit()
 
 
 def create_tables(cur, conn):
+    """
+    Executes the create_table_queries to create all needed tables in the redshift db 
+
+    Parameters
+    ----------
+    cur: The psycopg2 cursor for the connection
+    conn: The psycopg2 connection
+    """
     for query in create_table_queries:
         cur.execute(query)
         conn.commit()
 
 
 def main():
+    """
+    Main function that reads the config file, connects to the redshift db, executes the drop tables and create tables methods and afterwards closes the connection
+    """
     config = configparser.ConfigParser()
     config.read('config.cfg')
 
