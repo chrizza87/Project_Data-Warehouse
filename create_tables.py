@@ -35,7 +35,7 @@ def main():
     """
     Main function that reads the config file, connects to the redshift db, executes the drop tables and create tables methods and afterwards closes the connection
     """
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(delimiters=('='))
     config.read('config.cfg')
 
     conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(*config['CLUSTER'].values()))

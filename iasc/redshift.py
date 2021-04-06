@@ -18,7 +18,7 @@ def create_redshift_cluster(redshift, clusterType, nodeType, numNodes, dbName, c
     """
     
     try:
-        hw_params = []
+        hw_params = {}
         hw_params['ClusterType'] = clusterType
         
         if (nodeType == 'multi-node'):
