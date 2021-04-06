@@ -73,7 +73,6 @@ def main():
     
     IAM_ROLE = config['IAM_ROLE']
     IAM_ROLE['ARN'] = "'{}'".format(iamRoleArn)
-    IAM_ROLE['test'] = "'test123'"
     
     #Write changes back to file
     with open('config.cfg', 'w') as conf:
