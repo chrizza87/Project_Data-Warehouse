@@ -151,7 +151,7 @@ songplay_table_insert = ("""
         user_agent
     )
     ( 
-        SELECT 
+        SELECT DISTINCT
             events.ts,
             events.userid,
             events.level,
@@ -163,6 +163,7 @@ songplay_table_insert = ("""
         FROM staging_events events
         JOIN staging_songs songs
         ON (events.artist = songs.artist_name AND events.song = songs.title)
+        WHERE events.page='NextSong'
     )        
 """)
 
